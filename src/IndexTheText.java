@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class IndexTheText {
 	//the properties file
 	private final String PROPERTIES_FILE="resources/file";
 	//the words to exclude
-	private String[] myExcludedWords;
+	private List<String> myExcludedWords;
 	//the text to index
 	private String mySentences = "";
 	private SnowballStemmer theStemmer;
@@ -130,7 +131,7 @@ public class IndexTheText {
 			String excludeWordsConfigured = mybundle.getString("excludeWords");
 
 			//split the words
-			myExcludedWords = excludeWordsConfigured.split(",");
+			myExcludedWords = Arrays.asList(excludeWordsConfigured.split(","));
 		}
 	}
 
@@ -203,17 +204,8 @@ public class IndexTheText {
 				theStemmer.stem();
 				String myStem = theStemmer.getCurrent();
 
-				Boolean wordFounded=false;
-				//filter words 
-				for(String strExcluded:myExcludedWords)
-				{
-					if(strExcluded.equals(myStem))
-					{
-						wordFounded=true;
-					}
-				}
-				//only if its not forbidden
-				if(wordFounded==false)
+				//filter words 				
+				if(!myExcludedWords.contains(myStem))
 				{
 					//find the stem of the word in the list
 					WordOccurenceSentence wordOccurence= mapCounter.get(myStem);

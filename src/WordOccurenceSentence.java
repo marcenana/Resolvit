@@ -57,7 +57,11 @@ public void setSentences(ArrayList<Integer> sentences) {
 	this.sentences = sentences;
 }
 public void addSentenceNumber(Integer sentenceNumber) {
-	this.sentences.add(sentenceNumber);
+	//add only if unique index
+	if(!this.sentences.contains(sentenceNumber))
+	{
+		this.sentences.add(sentenceNumber);
+	}
 }
 
 public void addWord(String word) {
